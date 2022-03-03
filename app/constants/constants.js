@@ -1,4 +1,4 @@
-require('dotenv').config();
+require("dotenv").config();
 
 const RedisConfig = {
   port: process.env.REDIS_port,

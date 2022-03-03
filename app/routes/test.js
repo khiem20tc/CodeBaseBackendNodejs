@@ -1,9 +1,9 @@
-import Router from 'express'
+import Router from "express";
 
-import { testController } from '../controllers'
+import { testController } from "../controllers";
 
-const router = Router()
+const router = Router();
 
-router.post('/test', testController.test)
+router.post("/test", testController.test);
 
-export default router
+export default router;

@@ -27,6 +27,7 @@
         "@babel/register": "^7.12.10",
         "@casl/ability": "^4.1.6",
         "@hapi/joi": "^16.1.8",
+        "@typescript-eslint/parser": "^5.13.0",
         "app-root-path": "^3.0.0",
         "axios": "^0.21.1",
         "babel-loader": "^8.2.2",
