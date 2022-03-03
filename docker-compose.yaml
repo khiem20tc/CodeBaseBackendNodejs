@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  ebs-marketplace-api:
+    container_name: ebs-marketplace-api-stag
+    build:
+      context: .
+    ports:
+      - "7981:7981"
+    volumes:
+      - ./.env:/usr/src/app/.env
+    command: node ./dist/app.bundle.js

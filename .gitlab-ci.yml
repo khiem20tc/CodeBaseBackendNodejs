@@ -1,0 +1,42 @@
+stages:
+  - staging
+  #- production
+
+deploy_backend_staging:
+  stage: staging
+  before_script:
+    - apt-get update -qq
+    - apt-get install -qq git
+    # Setup SSH deploy keys
+    - "which ssh-agent || ( apt-get install -qq openssh-client )"
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$STAGING_PRIVATE_KEY")
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  environment:
+    name: staging
+  script:
+    - ssh -o StrictHostKeyChecking=no kienlt@128.199.192.37 "ssh git@gitlab.com && cd vbc_ebs_marketplacenft_backend && git reset --hard && git checkout develop && git pull && docker-compose up -d --build && exit"
+  only:
+    - develop
+
+# deploy_backend_production:
+#   stage: production
+#   before_script:
+#     - apt-get update -qq
+#     - apt-get install -qq git
+#     # Setup SSH deploy keys
+#     - "which ssh-agent || ( apt-get install -qq openssh-client )"
+#     - eval $(ssh-agent -s)
+#     - ssh-add <(echo "$PRODUCTION_PRIVATE_KEY")
+#     - mkdir -p ~/.ssh
+#     - chmod 700 ~/.ssh
+#     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+#   environment:
+#     name: production
+#   script:
+#     - ssh -o StrictHostKeyChecking=no cuong-vbc@178.128.90.155 "ssh git@gitlab.com && cd ebs-microservice/ebs-dashboard-api && git reset --hard && git checkout master && git pull && yarn install && yarn webpack-prod && docker exec ebs-dashboard pm2 restart ecosystem.config.js --only ebs-dashboard-production --env Production && exit"
+#   only:
+#     - master
+#
